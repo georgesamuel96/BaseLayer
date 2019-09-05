@@ -8,25 +8,22 @@ import com.saraelmoghazy.base.model.ResultsItem
 /**
  * Created by Sara Elmoghazy.
  */
-class PeopleAdapter(resultItems: ArrayList<ResultsItem?>?) : BaseAdapter<ResultsItem, ViewDataBinding>() {
-    private val resultItems: ArrayList<ResultsItem?>? = resultItems
+class PeopleAdapter(private val resultItems: ArrayList<ResultsItem>) :
+    BaseAdapter<ResultsItem, ViewDataBinding>() {
+    override val layout: Int
+        get() = R.layout.partial_people_item
 
-    override fun getItemForPosition(position: Int): ResultsItem? {
-        return resultItems?.get(position)
+    override fun getItemForPosition(position: Int): ResultsItem {
+        return resultItems[position]
     }
 
     override fun getItemCount(): Int {
-        return resultItems?.size ?: 0
+        return resultItems.size
     }
 
-    override fun getLayout(): Int {
-        return R.layout.partial_people_item
-    }
-
-    fun updateRV(items: List<ResultsItem?>?) {
-        resultItems?.clear()
-        if (items != null)
-            resultItems?.addAll(items)
+    fun updateRV(items: List<ResultsItem>) {
+        resultItems.clear()
+        resultItems.addAll(items)
         notifyDataSetChanged()
     }
 }

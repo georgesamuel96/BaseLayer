@@ -14,7 +14,7 @@ import java.util.*
 /**
  * Created by Sara Elmoghazy.
  */
-open abstract class BaseViewModel : ViewModel() {
+abstract class BaseViewModel : ViewModel() {
 
     private var useCases: SparseArray<BaseUseCase<*>> = SparseArray()
     private val failedUseCasesList = ArrayList<BaseUseCase<*>>()

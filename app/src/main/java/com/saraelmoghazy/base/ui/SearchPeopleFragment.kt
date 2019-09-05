@@ -25,8 +25,6 @@ class SearchPeopleFragment : BaseFragment<StarWarViewModel>(), KodeinAware {
     private val starWarViewModel: StarWarViewModel by lazy {
         ViewModelProvider(this, starWarsViewModelFactory).get(StarWarViewModel::class.java)
     }
-
-
     private var peopleAdapter: PeopleAdapter = PeopleAdapter(ArrayList())
 
     override fun onViewInflated() {
@@ -49,8 +47,8 @@ class SearchPeopleFragment : BaseFragment<StarWarViewModel>(), KodeinAware {
     private fun observeLiveData() {
         starWarViewModel.apply {
             peopleLiveData.observe(this@SearchPeopleFragment, Observer { peopleResponse ->
-                peopleAdapter
-                    .updateRV(peopleResponse.results)
+                if (peopleResponse.results.isNotEmpty())
+                    peopleAdapter.updateRV(peopleResponse.results)
             })
         }
     }

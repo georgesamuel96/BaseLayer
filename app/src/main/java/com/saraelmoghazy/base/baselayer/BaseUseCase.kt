@@ -8,13 +8,7 @@ import retrofit2.Response
  * This class represents an execution unit for different use cases (this means any use case
  * in the application should implement this contract).
  */
-abstract class BaseUseCase<M> {
-
-    val id: Int
-
-    constructor(id: Int) {
-        this.id = id
-    }
+abstract class BaseUseCase<M>(val id: Int) {
 
     protected abstract suspend fun buildUseCase(): Response<M>
 
