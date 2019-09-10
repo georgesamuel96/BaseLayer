@@ -24,11 +24,16 @@ class StarWarViewModel(useCase: StarWarUseCase) : BaseViewModel() {
 
     override fun <M> onSuccess(response: M?) {
         if (response is PeopleResponse) {
+            loadingIndicator.isLoading = false
+            loadingIndicatorLiveData.value = loadingIndicator
             peopleLiveData.value = response
         }
     }
 
     private fun searchPeople() {
-        executeUseCase(peopleUseCase,LoadingType.SHIMMER)
+        loadingIndicator.loadingType = LoadingType.SHIMMER
+        loadingIndicator.isLoading = true
+        loadingIndicatorLiveData.value = loadingIndicator
+        executeUseCase(peopleUseCase)
     }
 }

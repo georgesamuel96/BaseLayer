@@ -26,7 +26,7 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment() {
     private var loadingIndicator: Dialog? = null
     private var noConnectionErrorView: NoConnectionErrorView? = null
     lateinit var rootView: View
-    private var shimmerFrameLayout: ShimmerFrameLayout? = null
+    private var currentLoadingIndicator: LoadingIndicator? = null
     /**
      * @return layout resource id
      */
@@ -49,7 +49,7 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment() {
 
     private fun setupFragment() {
         if (getShimmerLayout() != 0)
-            setShimmerLayoutLayout()
+            setShimmerFrameLayout()
         setFragmentLayout()
         onViewInflated()
         getContentChildView()
@@ -79,6 +79,8 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment() {
     protected abstract fun getViewModel(): V
 
     private fun restart() {
+        currentLoadingIndicator?.isLoading = true
+        viewModel.loadingIndicatorLiveData.value = currentLoadingIndicator
         viewModel.restart()
     }
 
@@ -155,14 +157,14 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment() {
     }
 
 
-    private fun setShimmerLayoutLayout() {
-        View.inflate(this.activity, getShimmerLayout(), shimmerFrameLayout)
+    private fun setShimmerFrameLayout() {
+        View.inflate(this.activity, getShimmerLayout(), rootView.shimmerContainer)
     }
 
     protected abstract fun getShimmerLayout(): Int
 
     private fun showShimmerLayout() {
-        shimmerFrameLayout?.run {
+        rootView.shimmerContainer?.run {
             visibility = View.VISIBLE
             rootView.contentContainer.visibility = View.GONE
             startShimmer()
@@ -170,7 +172,7 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment() {
     }
 
     private fun hideShimmerLayout() {
-        shimmerFrameLayout?.run {
+        rootView.shimmerContainer?.run {
             stopShimmer()
             visibility = View.GONE
             rootView.contentContainer.visibility = View.VISIBLE
@@ -192,15 +194,16 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment() {
      */
     private fun observeLoading() {
         viewModel.loadingIndicatorLiveData.observe(this, Observer { loadingIndicator ->
-            when (loadingIndicator.loadingType) {
+            currentLoadingIndicator = loadingIndicator
+            when (currentLoadingIndicator?.loadingType) {
                 LoadingType.SHIMMER -> {
-                    when (loadingIndicator.isLoading) {
+                    when (loadingIndicator?.isLoading) {
                         true -> showShimmerLayout()
                         else -> hideShimmerLayout()
                     }
                 }
                 LoadingType.PROGRESS -> {
-                    when (loadingIndicator.isLoading) {
+                    when (loadingIndicator?.isLoading) {
                         true -> showProgressLoadingIndicator()
                         else -> hideProgressLoadingIndicator()
                     }

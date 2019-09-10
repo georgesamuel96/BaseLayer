@@ -63,8 +63,7 @@ abstract class BaseViewModel : ViewModel() {
         executeAllFailedUseCases()
     }
 
-    fun <M> executeUseCase(baseUseCase: BaseUseCase<M>, loadingType: LoadingType) {
-        loadingIndicator.loadingType = loadingType
+    fun <M> executeUseCase(baseUseCase: BaseUseCase<M>) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val result = baseUseCase.execute()
@@ -110,7 +109,7 @@ abstract class BaseViewModel : ViewModel() {
 
     private fun executeAllFailedUseCases() {
         for (useCase in failedUseCasesList) {
-            loadingIndicator.loadingType?.let { executeUseCase(useCase, it) }
+            executeUseCase(useCase)
         }
         failedUseCasesList.clear()
     }

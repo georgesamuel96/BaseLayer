@@ -24,8 +24,8 @@ class StarWarApp : Application(), KodeinAware {
 
     override val kodein by Kodein.lazy {
         import(retrofitModule)
-        bind() from provider { StarWarsRemoteDataSource(instance()) }
-        bind() from provider { StarWarUseCase(R.id.PeopleUseCase, instance()) }
-        bind() from provider { StarWarsViewModelFactory(instance()) }
+        bind() from singleton { StarWarsRemoteDataSource(instance()) }
+        bind() from singleton { StarWarUseCase(R.id.PeopleUseCase, instance()) }
+        bind() from singleton { StarWarsViewModelFactory(instance()) }
     }
 }
