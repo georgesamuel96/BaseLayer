@@ -14,11 +14,13 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.support.kodein
 import org.kodein.di.generic.instance
 
-
 /**
  * Created by Sara Elmoghazy.
  */
 class SearchPeopleFragment : BaseFragment<StarWarViewModel>(), KodeinAware {
+    override fun getShimmerLayout(): Int {
+        return R.layout.partial_loading
+    }
 
     override val kodein: Kodein by kodein()
     private val starWarsViewModelFactory: StarWarsViewModelFactory by instance()
@@ -33,7 +35,6 @@ class SearchPeopleFragment : BaseFragment<StarWarViewModel>(), KodeinAware {
     }
 
     override fun getViewModel(): StarWarViewModel = starWarViewModel
-
 
     private fun initPeopleRV() {
         rootView.rvPeople.layoutManager =

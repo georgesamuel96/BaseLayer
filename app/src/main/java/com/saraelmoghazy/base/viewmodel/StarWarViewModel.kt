@@ -3,6 +3,7 @@ package com.saraelmoghazy.base.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.saraelmoghazy.base.R
 import com.saraelmoghazy.base.baselayer.BaseViewModel
+import com.saraelmoghazy.base.baselayer.LoadingType
 import com.saraelmoghazy.base.baselayer.UseCase
 import com.saraelmoghazy.base.model.PeopleResponse
 import com.saraelmoghazy.base.usecase.StarWarUseCase
@@ -28,6 +29,6 @@ class StarWarViewModel(useCase: StarWarUseCase) : BaseViewModel() {
     }
 
     private fun searchPeople() {
-        executeUseCase(peopleUseCase)
+        executeUseCase(peopleUseCase,LoadingType.SHIMMER)
     }
 }
