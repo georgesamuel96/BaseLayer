@@ -1,18 +1,14 @@
-package com.saraelmoghazy.base.ui
+package com.saraelmoghazy
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.saraelmoghazy.base.R
 import com.saraelmoghazy.base.baselayer.BaseActivity
-import com.saraelmoghazy.base.baselayer.BaseFragment
-import com.saraelmoghazy.base.viewmodel.StarWarViewModel
+import com.saraelmoghazy.base.searchpeople.ui.SearchPeopleFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
-
 
     override val currentToolBar: Toolbar
         get() = toolbar
@@ -22,8 +18,11 @@ class MainActivity : BaseActivity() {
         get() = R.id.fragmentContainer
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        navigateToFragment(SearchPeopleFragment(), "", true, 1, "")
+        super.onCreate(savedInstanceState)
+        navigateToFragment(
+            SearchPeopleFragment(), null, false,
+            SearchPeopleFragment.TAG
+        )
     }
 }

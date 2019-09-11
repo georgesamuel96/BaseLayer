@@ -1,4 +1,4 @@
-package com.saraelmoghazy.base.model
+package com.saraelmoghazy.base.searchpeople.model
 
 data class PeopleResponse(
 	val next: Any? = null,

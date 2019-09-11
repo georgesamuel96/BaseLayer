@@ -1,4 +1,4 @@
-package com.saraelmoghazy.base.model
+package com.saraelmoghazy.base.searchpeople.model
 
 data class ResultsItem(
 	val films: List<String?>? = null,

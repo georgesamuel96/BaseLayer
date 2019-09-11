@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.saraelmoghazy.base.R
-import com.saraelmoghazy.base.ui.NoConnectionErrorView
 import kotlinx.android.synthetic.main.base_layout.*
 import kotlinx.android.synthetic.main.base_layout.view.*
 
@@ -100,7 +99,9 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment() {
     private fun showNoInternetConnectionDialog() {
         if (noConnectionErrorView == null)
             noConnectionErrorView =
-                NoConnectionErrorView(this.context, View.OnClickListener { tryAgain() })
+                NoConnectionErrorView(
+                    this.context,
+                    View.OnClickListener { tryAgain() })
         addErrorView(noConnectionErrorView)
     }
 

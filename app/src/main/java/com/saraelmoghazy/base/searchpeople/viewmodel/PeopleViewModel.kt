@@ -1,24 +1,23 @@
-package com.saraelmoghazy.base.viewmodel
+package com.saraelmoghazy.base.searchpeople.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.saraelmoghazy.base.R
 import com.saraelmoghazy.base.baselayer.BaseViewModel
 import com.saraelmoghazy.base.baselayer.UseCase
-import com.saraelmoghazy.base.model.PeopleResponse
-import com.saraelmoghazy.base.usecase.StarWarUseCase
+import com.saraelmoghazy.base.searchpeople.model.PeopleResponse
+import com.saraelmoghazy.base.searchpeople.usecase.SearchPeopleUseCase
 
 /**
  * Created by Sara Elmoghazy.
  */
-class StarWarViewModel(useCase: StarWarUseCase) : BaseViewModel() {
+class PeopleViewModel(useCase: SearchPeopleUseCase) : BaseViewModel() {
 
     val peopleLiveData = MutableLiveData<PeopleResponse>()
     @field:UseCase(R.id.PeopleUseCase)
-    val peopleUseCase: StarWarUseCase = useCase
+    val peopleUseCase: SearchPeopleUseCase = useCase
 
     init {
         start()
-        searchPeople()
     }
 
     override fun <M> onSuccess(response: M?) {
@@ -27,7 +26,8 @@ class StarWarViewModel(useCase: StarWarUseCase) : BaseViewModel() {
         }
     }
 
-    private fun searchPeople() {
+    fun searchPeople(query: String?) {
+        peopleUseCase.setParam(query)
         executeUseCase(peopleUseCase)
     }
 }

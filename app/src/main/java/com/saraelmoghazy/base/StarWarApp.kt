@@ -3,8 +3,8 @@ package com.saraelmoghazy.base
 import android.app.Application
 import com.saraelmoghazy.base.data.remote.RetrofitProvider
 import com.saraelmoghazy.base.data.remote.StarWarsRemoteDataSource
-import com.saraelmoghazy.base.usecase.StarWarUseCase
-import com.saraelmoghazy.base.viewmodel.StarWarsViewModelFactory
+import com.saraelmoghazy.base.searchpeople.usecase.SearchPeopleUseCase
+import com.saraelmoghazy.base.searchpeople.viewmodel.PeopleViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.bind
@@ -25,7 +25,7 @@ class StarWarApp : Application(), KodeinAware {
     override val kodein by Kodein.lazy {
         import(retrofitModule)
         bind() from provider { StarWarsRemoteDataSource(instance()) }
-        bind() from provider { StarWarUseCase(R.id.PeopleUseCase, instance()) }
-        bind() from provider { StarWarsViewModelFactory(instance()) }
+        bind() from provider { SearchPeopleUseCase(R.id.PeopleUseCase, instance()) }
+        bind() from provider { PeopleViewModelFactory(instance()) }
     }
 }

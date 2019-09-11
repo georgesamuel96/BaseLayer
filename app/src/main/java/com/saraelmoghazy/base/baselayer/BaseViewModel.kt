@@ -62,18 +62,15 @@ abstract class BaseViewModel : ViewModel() {
         executeAllFailedUseCases()
     }
 
-    fun <M> executeUseCase(baseUseCase: BaseUseCase<M>) {
-        loadingIndicatorLiveData.value = true
+    fun <M> executeUseCase(
+        baseUseCase: BaseUseCase<M>) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val result = baseUseCase.execute()
                 withContext(Dispatchers.Main) {
                     result.apply {
                         when (isSuccessful) {
-                            true -> {
-                                loadingIndicatorLiveData.value = false
-                                onSuccess(result.body())
-                            }
+                            true -> onSuccess(result.body())
                             else -> handleAPIError(result.errorBody()!!.string())
                         }
                     }
@@ -85,7 +82,7 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     private fun handleAPIError(error: String) {
-        loadingIndicatorLiveData.value = false
+        loadingIndicatorLiveData.value = true
         try {
             val jObjError = JSONObject(error)
             val errorMessage = jObjError.getJSONObject(ERROR).getString(MESSAGE)
@@ -97,8 +94,8 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     private suspend fun handleNoInternetConnectionError(useCaseId: Int) {
+        loadingIndicatorLiveData.value = true
         withContext(Dispatchers.Main) {
-            loadingIndicatorLiveData.value = false
             errorLiveData.value = APIException("", ErrorType.NETWORK)
             onError(useCaseId)
         }

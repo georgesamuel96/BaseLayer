@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
+import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -14,15 +15,22 @@ import com.saraelmoghazy.base.util.ConnectivityUtil
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 
+
 abstract class BaseActivity : AppCompatActivity() {
 
-    private var snackbar: Snackbar? = null
+    var snackbar: Snackbar? = null
     val isNetworkAvailable: Subject<Boolean> = PublishSubject.create()
     private var isLaunched: Boolean = false
     abstract val fragmentPlaceHolder: Int
     private val networkReceiver = NetworkChangeReceiver()
     protected abstract val layout: View
     protected abstract val currentToolBar: Toolbar
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initToolbar()
+    }
 
     override fun onResume() {
         super.onResume()
@@ -35,6 +43,7 @@ abstract class BaseActivity : AppCompatActivity() {
         unregisterReceiver(networkReceiver)
     }
 
+
     /**
      * navigate to next fragment
      *
@@ -45,35 +54,15 @@ abstract class BaseActivity : AppCompatActivity() {
      * @param currentFragmentTag
      */
     fun navigateToFragment(
-        nextFragment: BaseFragment<*>, previousFragmentTag: String,
-        addToBackStack: Boolean, fragmentTransition: Int, currentFragmentTag: String
+        nextFragment: BaseFragment<*>, previousFragmentTag: String?,
+        addToBackStack: Boolean, currentFragmentTag: String
     ) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.setTransition(fragmentTransition)
         fragmentTransaction.replace(fragmentPlaceHolder, nextFragment, currentFragmentTag)
         if (addToBackStack)
             fragmentTransaction.addToBackStack(previousFragmentTag)
 
         fragmentTransaction.commit()
-    }
-
-    /**
-     * Network change recovered listener , show status snack bar and expose to current fragment
-     */
-    private inner class NetworkChangeReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            val isConnected = ConnectivityUtil.isInternetAvailable(context)
-            isNetworkAvailable.onNext(isConnected)
-            if (isConnected) {
-                if (isLaunched)
-                    return
-                else
-                    buildConnectionAvailableMessage()
-            } else
-                buildNoConnectionMessage()
-            snackbar!!.show()
-            isLaunched = false
-        }
     }
 
     /**
@@ -100,13 +89,32 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    fun initToolbar() {
+    private fun initToolbar() {
         setSupportActionBar(currentToolBar)
         supportFragmentManager.addOnBackStackChangedListener {
             if (supportFragmentManager.backStackEntryCount > 0) {
                 supportActionBar!!.setDisplayHomeAsUpEnabled(true)
                 currentToolBar.setNavigationOnClickListener { onBackPressed() }
             }
+        }
+    }
+
+    /**
+     * Network change recovered listener , show status snack bar and expose to current fragment
+     */
+    private inner class NetworkChangeReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val isConnected = ConnectivityUtil.isInternetAvailable(context)
+            isNetworkAvailable.onNext(isConnected)
+            if (isConnected) {
+                if (isLaunched)
+                    return
+                else
+                    buildConnectionAvailableMessage()
+            } else
+                buildNoConnectionMessage()
+            snackbar!!.show()
+            isLaunched = false
         }
     }
 

@@ -4,4 +4,6 @@
     <string name="btn_retry">Reload</string>
     <string name="confirm_dialog">OK</string>
     <string name="connection_return_header">Connected successfully</string>
+    <string name="search_label">Search</string>
+    <string name="search_hint">Search by name/birth date</string>
 </resources>
