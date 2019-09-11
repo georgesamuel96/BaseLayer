@@ -1,6 +1,9 @@
 package com.saraelmoghazy.base
 
 import android.app.Application
+import com.saraelmoghazy.base.chardetails.usecase.PlanetsUseCase
+import com.saraelmoghazy.base.chardetails.usecase.SpeciesUseCase
+import com.saraelmoghazy.base.chardetails.viewmodel.CharacterDetailsViewModelFactory
 import com.saraelmoghazy.base.data.remote.RetrofitProvider
 import com.saraelmoghazy.base.data.remote.StarWarsRemoteDataSource
 import com.saraelmoghazy.base.searchpeople.usecase.SearchPeopleUseCase
@@ -20,12 +23,16 @@ class StarWarApp : Application(), KodeinAware {
 
     private val retrofitModule = Kodein.Module(name = "Retrofit") {
         bind<Retrofit>() with singleton { RetrofitProvider.getInstance() }
+        bind() from singleton { StarWarsRemoteDataSource(instance()) }
     }
 
     override val kodein by Kodein.lazy {
         import(retrofitModule)
-        bind() from provider { StarWarsRemoteDataSource(instance()) }
         bind() from provider { SearchPeopleUseCase(R.id.PeopleUseCase, instance()) }
         bind() from provider { PeopleViewModelFactory(instance()) }
+        bind() from provider { PlanetsUseCase(R.id.PlanetsUseCase, instance()) }
+        bind() from provider { SpeciesUseCase(R.id.SpeciesUseCase, instance()) }
+        bind() from provider { CharacterDetailsViewModelFactory(instance(), instance())
+        }
     }
 }

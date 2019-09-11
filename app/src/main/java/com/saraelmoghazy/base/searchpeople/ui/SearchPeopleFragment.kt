@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.saraelmoghazy.base.R
 import com.saraelmoghazy.base.baselayer.BaseActivity
 import com.saraelmoghazy.base.baselayer.BaseFragment
+import com.saraelmoghazy.base.chardetails.CharacterDetailsFragment
 import com.saraelmoghazy.base.searchpeople.model.ResultsItem
 import com.saraelmoghazy.base.searchpeople.viewmodel.PeopleViewModel
 import com.saraelmoghazy.base.searchpeople.viewmodel.PeopleViewModelFactory
@@ -31,6 +32,9 @@ import org.kodein.di.generic.instance
  * Created by Sara Elmoghazy.
  */
 class SearchPeopleFragment : BaseFragment<PeopleViewModel>(), KodeinAware {
+    override fun getShimmerLayout(): Int {
+        return R.layout.partial_loading
+    }
 
     companion object {
         val TAG = SearchPeopleFragment.javaClass.simpleName
@@ -60,7 +64,7 @@ class SearchPeopleFragment : BaseFragment<PeopleViewModel>(), KodeinAware {
 
 
     private fun initPeopleRV() {
-        onItemClickListener.subscribe(Consumer { t -> })
+        onItemClickListener.subscribe(Consumer { item -> navigateToDetails(item) })
         rootView.rvPeople.layoutManager =
             LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
         rootView.rvPeople.adapter = peopleAdapter
@@ -90,8 +94,13 @@ class SearchPeopleFragment : BaseFragment<PeopleViewModel>(), KodeinAware {
 
     }
 
-    fun navigateToDetails() {
-        (activity as BaseActivity).navigateToFragment()
+    private fun navigateToDetails(item: ResultsItem) {
+        (activity as BaseActivity).navigateToFragment(
+            CharacterDetailsFragment.newInstance(item),
+            TAG,
+            true,
+            CharacterDetailsFragment.TAG
+        )
     }
 
     inner class OnQueryChangeListener : OnQueryTextListener {
@@ -105,5 +114,4 @@ class SearchPeopleFragment : BaseFragment<PeopleViewModel>(), KodeinAware {
             return true
         }
     }
-
 }

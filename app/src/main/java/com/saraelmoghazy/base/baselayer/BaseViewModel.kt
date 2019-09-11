@@ -18,8 +18,9 @@ abstract class BaseViewModel : ViewModel() {
 
     private var useCases: SparseArray<BaseUseCase<*>> = SparseArray()
     private val failedUseCasesList = ArrayList<BaseUseCase<*>>()
-    val loadingIndicatorLiveData = MutableLiveData<Boolean>()
+    val loadingIndicatorLiveData = MutableLiveData<LoadingIndicator>()
     val errorLiveData = MutableLiveData<APIException>()
+    var loadingIndicator: LoadingIndicator = LoadingIndicator()
 
     companion object {
         const val ERROR = "error"
@@ -62,8 +63,9 @@ abstract class BaseViewModel : ViewModel() {
         executeAllFailedUseCases()
     }
 
-    fun <M> executeUseCase(
-        baseUseCase: BaseUseCase<M>) {
+
+    fun <M> executeUseCase(baseUseCase: BaseUseCase<M>) {
+
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val result = baseUseCase.execute()
@@ -75,14 +77,15 @@ abstract class BaseViewModel : ViewModel() {
                         }
                     }
                 }
-            } catch (ex: Exception) {
+            } catch (ex: java.lang.Exception) {
                 handleNoInternetConnectionError(baseUseCase.id)
             }
         }
     }
 
     private fun handleAPIError(error: String) {
-        loadingIndicatorLiveData.value = true
+        loadingIndicator.isLoading = false
+        loadingIndicatorLiveData.value = loadingIndicator
         try {
             val jObjError = JSONObject(error)
             val errorMessage = jObjError.getJSONObject(ERROR).getString(MESSAGE)
@@ -93,9 +96,11 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
+
     private suspend fun handleNoInternetConnectionError(useCaseId: Int) {
-        loadingIndicatorLiveData.value = true
         withContext(Dispatchers.Main) {
+            loadingIndicator.isLoading = false
+            loadingIndicatorLiveData.value = loadingIndicator
             errorLiveData.value = APIException("", ErrorType.NETWORK)
             onError(useCaseId)
         }

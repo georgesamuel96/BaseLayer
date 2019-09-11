@@ -8,6 +8,7 @@ import com.saraelmoghazy.base.searchpeople.model.ResultsItem
 import io.reactivex.subjects.Subject
 import kotlinx.android.synthetic.main.partial_people_item.view.*
 
+
 /**
  * Created by Sara Elmoghazy.
  */

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="obj"
-            type="com.saraelmoghazy.base.model.ResultsItem" />
+            type="com.saraelmoghazy.base.searchpeople.model.ResultsItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

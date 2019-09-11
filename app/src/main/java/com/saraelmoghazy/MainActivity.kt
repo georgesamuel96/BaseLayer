@@ -20,9 +20,10 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_main)
         super.onCreate(savedInstanceState)
-        navigateToFragment(
-            SearchPeopleFragment(), null, false,
-            SearchPeopleFragment.TAG
-        )
+        if (savedInstanceState == null)
+            navigateToFragment(
+                SearchPeopleFragment(), null, false,
+                SearchPeopleFragment.TAG
+            )
     }
 }

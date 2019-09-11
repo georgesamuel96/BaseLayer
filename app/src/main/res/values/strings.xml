@@ -6,4 +6,12 @@
     <string name="connection_return_header">Connected successfully</string>
     <string name="search_label">Search</string>
     <string name="search_hint">Search by name/birth date</string>
+    <string name="char_name">Name</string>
+    <string name="birth_year">Birth</string>
+    <string name="height">Height</string>
+    <string name="species_name">species name</string>
+    <string name="Language">language (species)</string>
+    <string name="homeworld">homeworld (species)</string>
+    <string name="population">population (planets)</string>
+    <string name="films">films</string>
 </resources>

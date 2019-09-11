@@ -1,8 +1,11 @@
 package com.saraelmoghazy.base.data.remote
 
+import com.saraelmoghazy.base.chardetails.model.PlanetsResponse
+import com.saraelmoghazy.base.chardetails.model.SpeciesResponse
 import com.saraelmoghazy.base.searchpeople.model.PeopleResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
@@ -11,7 +14,19 @@ import retrofit2.http.Query
 interface ServiceApi {
 
     @GET("people/")
-    suspend  fun searchPeople(
+    suspend fun searchPeople(
         @Query("search") key: String?
     ): Response<PeopleResponse>
+
+
+    @GET("planets/{id}")
+    suspend fun getPlanets(
+        @Path("id") key: Int?
+    ): Response<PlanetsResponse>
+
+    @GET("species/{id}")
+    suspend fun getSpecies(
+        @Path("id") key: Int?
+    ): Response<SpeciesResponse>
+
 }
