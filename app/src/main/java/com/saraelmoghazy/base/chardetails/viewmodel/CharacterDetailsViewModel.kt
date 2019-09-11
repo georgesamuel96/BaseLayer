@@ -11,13 +11,14 @@ import com.saraelmoghazy.base.chardetails.usecase.PlanetsUseCase
 import com.saraelmoghazy.base.chardetails.usecase.SpeciesUseCase
 import com.saraelmoghazy.base.searchpeople.model.ResultsItem
 
+
 class CharacterDetailsViewModel(
     @field:UseCase(R.id.SpeciesUseCase) val speciesUseCase: SpeciesUseCase, @field:UseCase(
         R.id.PlanetsUseCase
     ) val planetsUseCase: PlanetsUseCase
 ) :
     BaseViewModel() {
-    private var character: ResultsItem? = null
+    private lateinit var character: ResultsItem
     private var characterUiModel: CharacterUiModel? = null
     val characterLiveData = MutableLiveData<CharacterUiModel>()
 
@@ -26,7 +27,7 @@ class CharacterDetailsViewModel(
     }
 
     fun getCharacter(character: ResultsItem) {
-        if (this.character == null) {
+        if (this.characterUiModel == null) {
             this.character = character
             characterUiModel = CharacterUiModel()
             characterUiModel?.height = character.height
@@ -40,16 +41,14 @@ class CharacterDetailsViewModel(
     }
 
     private fun getSpecies() {
-        val speciesId =1
-        speciesUseCase.speciesId = speciesId
+        speciesUseCase.speciesId = extractId(character.species?.get(0))
         loadingIndicator.isLoading = true
         loadingIndicatorLiveData.value = loadingIndicator
         executeUseCase(speciesUseCase)
     }
 
     private fun getPlanets() {
-        val planetId = 1
-        planetsUseCase.planetId = planetId
+        planetsUseCase.planetId = extractId(character.homeworld)
         loadingIndicator.isLoading = true
         loadingIndicatorLiveData.value = loadingIndicator
         executeUseCase(planetsUseCase)
@@ -68,6 +67,12 @@ class CharacterDetailsViewModel(
                 characterLiveData.value = characterUiModel
             }
         }
+    }
+
+    private fun extractId(url: String?): Int {
+        var lastStr = url?.substring(url.lastIndexOf('/') - 1)
+        var id = lastStr?.replace("/", "")
+        return id?.toInt()!!
     }
 }
 
