@@ -1,7 +1,8 @@
 package com.saraelmoghazy.base.data.remote
 
-import com.saraelmoghazy.base.chardetails.model.PlanetsResponse
-import com.saraelmoghazy.base.chardetails.model.SpeciesResponse
+import com.saraelmoghazy.base.characterdetails.model.FilmResponse
+import com.saraelmoghazy.base.characterdetails.model.PlanetsResponse
+import com.saraelmoghazy.base.characterdetails.model.SpeciesResponse
 import com.saraelmoghazy.base.searchpeople.model.PeopleResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -28,5 +29,11 @@ interface ServiceApi {
     suspend fun getSpecies(
         @Path("id") key: Int?
     ): Response<SpeciesResponse>
+
+
+    @GET("films/{id}")
+    suspend fun getFilms(
+        @Path("id") key: Int?
+    ): Response<FilmResponse>
 
 }

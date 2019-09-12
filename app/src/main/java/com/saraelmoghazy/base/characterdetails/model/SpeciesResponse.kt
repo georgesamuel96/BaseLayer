@@ -1,4 +1,4 @@
-package com.saraelmoghazy.base.chardetails.model
+package com.saraelmoghazy.base.characterdetails.model
 
 data class SpeciesResponse(
 	val homeworld: String? = null,

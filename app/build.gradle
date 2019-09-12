@@ -48,5 +48,6 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha04'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.1.0'
     implementation 'com.facebook.shimmer:shimmer:0.4.0'
+    implementation "co.metalab.asyncawait:asyncawait:1.0.1-beta1"
 
 }

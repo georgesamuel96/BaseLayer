@@ -4,4 +4,5 @@
     <item name="PeopleUseCase" type="id" />
     <item name="PlanetsUseCase" type="id" />
     <item name="SpeciesUseCase" type="id" />
+    <item name="FilmsUseCase" type="id" />
 </resources>

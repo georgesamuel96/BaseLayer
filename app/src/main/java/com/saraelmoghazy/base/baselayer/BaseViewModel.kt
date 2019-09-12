@@ -77,7 +77,7 @@ abstract class BaseViewModel : ViewModel() {
                         }
                     }
                 }
-            } catch (ex: java.lang.Exception) {
+            } catch (ex:Exception) {
                 handleNoInternetConnectionError(baseUseCase.id)
             }
         }

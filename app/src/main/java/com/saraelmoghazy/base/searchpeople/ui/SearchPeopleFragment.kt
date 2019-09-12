@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.saraelmoghazy.base.R
 import com.saraelmoghazy.base.baselayer.BaseActivity
 import com.saraelmoghazy.base.baselayer.BaseFragment
-import com.saraelmoghazy.base.chardetails.CharacterDetailsFragment
+import com.saraelmoghazy.base.characterdetails.CharacterDetailsFragment
 import com.saraelmoghazy.base.searchpeople.model.ResultsItem
 import com.saraelmoghazy.base.searchpeople.viewmodel.PeopleViewModel
 import com.saraelmoghazy.base.searchpeople.viewmodel.PeopleViewModelFactory

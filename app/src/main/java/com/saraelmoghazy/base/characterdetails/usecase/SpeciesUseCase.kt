@@ -1,7 +1,7 @@
-package com.saraelmoghazy.base.chardetails.usecase
+package com.saraelmoghazy.base.characterdetails.usecase
 
 import com.saraelmoghazy.base.baselayer.BaseUseCase
-import com.saraelmoghazy.base.chardetails.model.SpeciesResponse
+import com.saraelmoghazy.base.characterdetails.model.SpeciesResponse
 import com.saraelmoghazy.base.data.StarWarsRepository
 import retrofit2.Response
 

@@ -1,12 +1,12 @@
-package com.saraelmoghazy.base.chardetails
+package com.saraelmoghazy.base.characterdetails
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.saraelmoghazy.base.R
 import com.saraelmoghazy.base.baselayer.BaseFragment
-import com.saraelmoghazy.base.chardetails.viewmodel.CharacterDetailsViewModel
-import com.saraelmoghazy.base.chardetails.viewmodel.CharacterDetailsViewModelFactory
+import com.saraelmoghazy.base.characterdetails.viewmodel.CharacterDetailsViewModel
+import com.saraelmoghazy.base.characterdetails.viewmodel.CharacterDetailsViewModelFactory
 import com.saraelmoghazy.base.searchpeople.model.ResultsItem
 import kotlinx.android.synthetic.main.character_details_fragment.view.*
 import org.kodein.di.Kodein
@@ -55,15 +55,17 @@ class CharacterDetailsFragment : BaseFragment<CharacterDetailsViewModel>(), Kode
     private fun observeCharacterDetails() {
         characterDetailsViewModel.characterLiveData.observe(this, Observer { character ->
             character.run {
-                rootView.txt_name.text = name
+                rootView.txtName.text = name
                 rootView.txtPopulation.text = population.toString()
-                rootView.txtHomeWorld.text = speciesHomeWorld
-                rootView.txt_birth.text = birthYear
-                rootView.txt_language.text = speciesLanguage
+                rootView.txtSpeciesHomeWorld.text = speciesHomeWorld
+                rootView.txtBirth.text = birthYear
+                rootView.txtSpeciesLanguage.text = speciesLanguage
+                val sb = StringBuilder()
                 filmResponse?.forEach {
-                    rootView.txtFilms.append(it)
+                    sb.append(it).append(" / ")
                 }
-                rootView.txt_spices_name.text = speciesName
+                rootView.txtFilms.text = sb.toString()
+                rootView.txtSpeciesName.text = speciesName
             }
         })
     }

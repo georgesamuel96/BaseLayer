@@ -1,9 +1,10 @@
 package com.saraelmoghazy.base
 
 import android.app.Application
-import com.saraelmoghazy.base.chardetails.usecase.PlanetsUseCase
-import com.saraelmoghazy.base.chardetails.usecase.SpeciesUseCase
-import com.saraelmoghazy.base.chardetails.viewmodel.CharacterDetailsViewModelFactory
+import com.saraelmoghazy.base.characterdetails.usecase.FilmsUseCase
+import com.saraelmoghazy.base.characterdetails.usecase.PlanetsUseCase
+import com.saraelmoghazy.base.characterdetails.usecase.SpeciesUseCase
+import com.saraelmoghazy.base.characterdetails.viewmodel.CharacterDetailsViewModelFactory
 import com.saraelmoghazy.base.data.remote.RetrofitProvider
 import com.saraelmoghazy.base.data.remote.StarWarsRemoteDataSource
 import com.saraelmoghazy.base.searchpeople.usecase.SearchPeopleUseCase
@@ -32,7 +33,9 @@ class StarWarApp : Application(), KodeinAware {
         bind() from provider { PeopleViewModelFactory(instance()) }
         bind() from provider { PlanetsUseCase(R.id.PlanetsUseCase, instance()) }
         bind() from provider { SpeciesUseCase(R.id.SpeciesUseCase, instance()) }
-        bind() from provider { CharacterDetailsViewModelFactory(instance(), instance())
+        bind() from provider { FilmsUseCase(R.id.FilmsUseCase, instance()) }
+        bind() from provider {
+            CharacterDetailsViewModelFactory(instance(), instance(), instance())
         }
     }
 }
