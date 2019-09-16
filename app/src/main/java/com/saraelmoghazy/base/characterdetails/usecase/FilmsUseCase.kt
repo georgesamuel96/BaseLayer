@@ -1,13 +1,13 @@
 package com.saraelmoghazy.base.characterdetails.usecase
 
 import com.saraelmoghazy.base.baselayer.BaseUseCase
+import com.saraelmoghazy.base.characterdetails.model.FilmResponse
 import com.saraelmoghazy.base.characterdetails.model.FilmsResponse
 import com.saraelmoghazy.base.data.StarWarsRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.*
 import retrofit2.Response
+import java.lang.Exception
+import java.util.concurrent.ConcurrentLinkedQueue
 
 class FilmsUseCase(id: Int, private val repository: StarWarsRepository) :
     BaseUseCase<FilmsResponse>(id) {
@@ -15,14 +15,27 @@ class FilmsUseCase(id: Int, private val repository: StarWarsRepository) :
     var filmIds = ArrayList<Int>()
 
     override suspend fun buildUseCase(): Response<FilmsResponse> {
-        val result  =  joinAll(CoroutineScope(Dispatchers.IO).async {
-            for (id in filmIds) {
-                repository.getFilms(filmIds[id])
-            }
-        })
-        result.
+        val lstOfFilms = ArrayList<FilmResponse>()
+        val lstOfReturnData = ConcurrentLinkedQueue<Response<FilmResponse>>()
+        runBlocking {
+            processRequests(lstOfReturnData)
+        }
+        lstOfReturnData.forEach {
+            if (it.isSuccessful) {
+                lstOfFilms.add(it.body()!!)
+            } else
+                return Response.error(400, it.errorBody())
+
+        }
+        var filmsResponse = FilmsResponse()
+        filmsResponse.films.addAll(lstOfFilms)
+        return Response.success(filmsResponse)
+    }
 
 
-
+    private suspend fun processRequests(lstOfReturnData: ConcurrentLinkedQueue<Response<FilmResponse>>) {
+        for (id in filmIds) {
+            lstOfReturnData.add(repository.getFilms(filmIds[id]))
+        }
     }
 }
